@@ -13,7 +13,7 @@ require("dotenv").config();
 const io = socket.get();
 let client = null;
 const { createClient } = require("redis");
-const redis = createClient(process.env.REDIS_TLS_URL);
+const redis = createClient({ url: process.env.REDIS_URL });
 redis.connect();
 
 const loadingStates = [
