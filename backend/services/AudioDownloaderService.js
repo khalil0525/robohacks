@@ -2,7 +2,7 @@ const { MediaDownloader } = require("../services/media-downloader");
 const ytdl = require("ytdl-core");
 const ffmpeg = require("fluent-ffmpeg");
 const { MediaConverter } = require("../services/media-converter");
-const path = require("path"); // Import the path module
+const path = require("path");
 
 const audioPreset = {
 	quality: "highestaudio",
@@ -11,21 +11,31 @@ const audioPreset = {
 
 class YtAudioDownloadService {
 	async downloadAudio(videoUrl) {
-		const youtubeDownloader = new MediaDownloader(ytdl);
-		youtubeDownloader.setStream(videoUrl, audioPreset);
-		const videoId = await youtubeDownloader.getVideoId(videoUrl);
-		console.log(videoId);
-		const audioConverter = new MediaConverter(ffmpeg);
-		const stream = youtubeDownloader.getStream();
-		const fileDestination = path.join(
-			__dirname,
-			"audio-files",
-			`${videoId}.wav`
-		);
+		try {
+			console.log("Starting audio download...");
 
-		await audioConverter.convertAudio(stream, "wav", fileDestination);
+			const youtubeDownloader = new MediaDownloader(ytdl);
+			youtubeDownloader.setStream(videoUrl, audioPreset);
+			const videoId = await youtubeDownloader.getVideoId(videoUrl);
+			console.log("Video ID:", videoId);
 
-		return fileDestination;
+			const audioConverter = new MediaConverter(ffmpeg);
+			const stream = youtubeDownloader.getStream();
+			const fileDestination = path.join(
+				__dirname,
+				"audio-files",
+				`${videoId}.wav`
+			);
+			console.log("File destination:", fileDestination);
+
+			await audioConverter.convertAudio(stream, "wav", fileDestination);
+
+			console.log("Finished audio download.");
+			return fileDestination;
+		} catch (error) {
+			console.error("Error during audio download:", error);
+			throw error; // Rethrow the error to handle it at a higher level
+		}
 	}
 }
 
