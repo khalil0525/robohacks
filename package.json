@@ -24,6 +24,6 @@
     "nodemon": "^2.0.20",
     "redis": "^4.3.1",
     "socket.io": "^4.5.2",
-    "ytdl-core": "^4.11.2"
+    "ytdl-core": "^4.11.5"
   }
 }
