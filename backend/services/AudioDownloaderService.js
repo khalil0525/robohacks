@@ -23,7 +23,7 @@ class YtAudioDownloadService {
 			const stream = youtubeDownloader.getStream();
 			const fileDestination = path.join(
 				__dirname,
-				"audio-files",
+				"../audio-files",
 				`${videoId}.wav`
 			);
 			console.log("File destination:", fileDestination);
