@@ -6,7 +6,12 @@ const { socket } = require("./utils/socket");
 const path = require("path");
 
 const server = require("http").createServer(app);
-socket.init(server);
+
+const io = require("socket.io")(server, {
+	cors: {
+		origin: "*",
+	},
+});
 
 const {
 	youtubeTranscriberController,
